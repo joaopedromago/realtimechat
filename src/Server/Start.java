@@ -56,7 +56,7 @@ public class Start implements javax.jms.MessageListener {
             // System.exit(0);
 
             TextMessage message = session.createTextMessage();
-            message.setText(userName + ": " + messageToSend);
+            message.setText(username + ": " + messageToSend);
             publisher.publish(message);
         }
     }
