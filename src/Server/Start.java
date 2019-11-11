@@ -23,7 +23,11 @@ import javax.jms.TopicSubscriber;
 public class Start implements javax.jms.MessageListener {
     public static final String TOPIC = "topic/RealTimeChatTopic";
 
-    public static void main(String[] args) throws JMSException, NamingException, IOException {
+    public static void main(String[] args) throws Exception {
+        if (args.length == 0) {
+            throw new Exception("Favor informar o seu nome como argumento.");
+        }
+
         String username = args[0];
         Start server = new Start();
         Context initialContext = Start.getInitialContext();
