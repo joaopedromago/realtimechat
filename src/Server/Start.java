@@ -31,7 +31,7 @@ public class Start implements javax.jms.MessageListener {
         TopicConnectionFactory connectionFactory = (TopicConnectionFactory) initialContext.lookup("ConnectionFactory");
         TopicConnection connection = (TopicConnection) connectionFactory.createConnection();
         server.subscribe(connection, topic, server);
-        server.publish(connection, topic, userName);
+        server.publish(connection, topic, username);
     }
 
     public static Context getInitialContext() throws JMSException, NamingException {
@@ -43,7 +43,7 @@ public class Start implements javax.jms.MessageListener {
         return context;
     }
 
-    public void publish(TopicConnection connection, Topic topic, String userName) throws JMSException, IOException {
+    public void publish(TopicConnection connection, Topic topic, String username) throws JMSException, IOException {
         TopicSession session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
         TopicPublisher publisher = session.createPublisher(topic);
         connection.start();
