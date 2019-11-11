@@ -1,3 +1,5 @@
+import java.util.UUID;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
@@ -16,6 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import Classes.Chat;
+import Classes.Messages;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -25,11 +28,12 @@ import org.eclipse.swt.widgets.Event;
 
 public class Main extends ApplicationWindow {
 	private Text message;
-	private Text server;
+	private Text recipient;
 	private Text messages;
 	private Chat chat;
 	private Shell shell;
 	private Text yourName;
+	private Messages messagesLib;
 
 	/**
 	 * Create the application window.
@@ -37,7 +41,6 @@ public class Main extends ApplicationWindow {
 	public Main() {
 		super(null);
 		setShellStyle(SWT.MIN | SWT.MAX);
-		createActions();
 		addToolBar(SWT.FLAT | SWT.WRAP);
 		addMenuBar();
 		addStatusLine();
@@ -50,6 +53,8 @@ public class Main extends ApplicationWindow {
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
+		UUID generatedName = UUID.randomUUID();
+
 		Display display = Display.getDefault();
 		Color backgroundColor = new Color(display, new RGB(255, 255, 255));
 		Color messagesColor = new Color(display, new RGB(240, 240, 240));
@@ -60,7 +65,7 @@ public class Main extends ApplicationWindow {
 		Label title = new Label(container, SWT.CENTER);
 		title.setBackground(backgroundColor);
 		title.setBounds(10, 0, 770, 15);
-		title.setText("Chat de mensagens, informe um código para acessar um servidor e divirta-se!");
+		title.setText("Chat de mensagens, envie uma mensagem utilizando o servidor e divirta-se!");
 
 		Label yourNameInfo = new Label(container, SWT.CENTER);
 		yourNameInfo.setBackground(backgroundColor);
@@ -68,38 +73,29 @@ public class Main extends ApplicationWindow {
 		yourNameInfo.setText("Nome exibição: ");
 
 		yourName = new Text(container, SWT.BORDER);
-		yourName.setText("Meu nome");
+		yourName.setText(generatedName.toString());
 		yourName.setMessage("Informe seu nome");
 		yourName.setBounds(120, 30, 190, 21);
-
-		server = new Text(container, SWT.BORDER);
-		server.setMessage("Informe o código do servidor que deseja acessar");
-		server.setBounds(325, 30, 335, 21);
-		server.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				if (e.keyCode == 13) {
-					chat.setServer();
-				}
-			}
-		});
-
-		Button setServer = new Button(container, SWT.NONE);
-		setServer.setBounds(670, 30, 110, 22);
-		setServer.setText("Aplicar");
-		setServer.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				chat.setServer();
-			}
-		});
 
 		messages = new Text(container, SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL | SWT.WRAP);
 		messages.setBackground(messagesColor);
 		messages.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL));
 		messages.setBounds(10, 60, 770, 430);
 
+		recipient = new Text(container, SWT.BORDER);
+		recipient.setMessage("Destinatário");
+		recipient.setBounds(10, 500, 190, 21);
+		recipient.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.keyCode == 13) {
+					message.forceFocus();
+				}
+			}
+		});
+
 		message = new Text(container, SWT.BORDER);
 		message.setMessage("Digite sua mensagem aqui");
-		message.setBounds(10, 500, 650, 21);
+		message.setBounds(210, 500, 450, 21);
 		message.forceFocus();
 		message.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -119,16 +115,13 @@ public class Main extends ApplicationWindow {
 		});
 
 		// creating classes instances
-		chat = new Chat(shell, message, server, messages, yourName);
+		chat = new Chat(shell, message, recipient, messages, yourName);
+		messagesLib = new Messages(shell);
+
+		messagesLib.information("Seu identificador único para receber mensagens privadas",
+				generatedName.toString() + ", você pode altera-lo quando quiser no campo superior.");
 
 		return container;
-	}
-
-	/**
-	 * Create the actions.
-	 */
-	private void createActions() {
-		// Create the actions
 	}
 
 	/**

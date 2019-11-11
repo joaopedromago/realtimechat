@@ -8,32 +8,38 @@ public class Chat {
 	Shell shell;
 	Text messages;
 	Text message;
-	Text server;
+	Text recipient;
 	Text yourName;
 
-	public Chat(Shell _shell, Text _message, Text _server, Text _messages, Text _yourName) {
+	public Chat(Shell _shell, Text _message, Text _recipient, Text _messages, Text _yourName) {
 		shell = _shell;
 		messagesLib = new Messages(shell);
 		message = _message;
-		server = _server;
+		recipient = _recipient;
 		messages = _messages;
 		yourName = _yourName;
 	}
 
 	public void sendMessage() {
-		if (yourName.getText().length() == 0) {
+		String recipientName = recipient.getText();
+		String yourNameText = yourName.getText();
+		String messageText = message.getText();
+		String additional = "";
+
+		if (recipientName.length() > 0) {
+			additional += " (enviado para " + recipientName + ")";
+		} else {
+			additional += " (enviado para todos)";
+		}
+
+		if (yourNameText.length() == 0) {
 			messagesLib.error("Error!", "Você deve informar um nome de exibição antes de enviar uma mensagem!");
 			return;
 		}
-		if (message.getText().length() > 0) {
-			messages.append(yourName.getText() + ":\n	" + message.getText() + "\n");
+		if (messageText.length() > 0) {
+			messages.append(yourName.getText() + additional + ":\n	" + message.getText() + "\n");
 			message.setText("");
 		}
-		message.forceFocus();
-	}
-
-	public void setServer() {
-		messagesLib.confirm("Sucesso!", "Servidor setado com sucesso!");
 		message.forceFocus();
 	}
 }
