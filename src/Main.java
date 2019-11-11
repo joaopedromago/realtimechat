@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wb.swt.SWTResourceManager;
 
 import Classes.Chat;
 import Classes.Messages;
@@ -60,7 +59,7 @@ public class Main extends ApplicationWindow {
 		Color messagesColor = new Color(display, new RGB(240, 240, 240));
 
 		Composite container = new Composite(parent, SWT.NONE);
-		container.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_BACKGROUND));
+		container.setBackground(backgroundColor);
 
 		Label title = new Label(container, SWT.CENTER);
 		title.setBackground(backgroundColor);
