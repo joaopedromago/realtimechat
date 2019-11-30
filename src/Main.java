@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import Classes.Chat;
 import Classes.Messages;
+import Server.JMSCliente;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -33,16 +34,22 @@ public class Main extends ApplicationWindow {
 	private Shell shell;
 	private Text yourName;
 	private Messages messagesLib;
+	JMSCliente cliente;
 
 	/**
 	 * Create the application window.
 	 */
 	public Main() {
 		super(null);
+
 		setShellStyle(SWT.MIN | SWT.MAX);
 		addToolBar(SWT.FLAT | SWT.WRAP);
 		addMenuBar();
 		addStatusLine();
+
+		// inicializando o servidor lado cliente
+		cliente = new JMSCliente();
+		cliente.setMyCode(yourName.getText());
 	}
 
 	/**

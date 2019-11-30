@@ -3,6 +3,8 @@ package Classes;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import Server.JMSCliente;
+
 public class Chat {
 	Messages messagesLib;
 	Shell shell;
@@ -10,6 +12,8 @@ public class Chat {
 	Text message;
 	Text recipient;
 	Text yourName;
+
+	JMSCliente cliente;
 
 	public Chat(Shell _shell, Text _message, Text _recipient, Text _messages, Text _yourName) {
 		shell = _shell;
@@ -38,6 +42,7 @@ public class Chat {
 		}
 		if (messageText.length() > 0) {
 			messages.append(yourName.getText() + additional + ":\n	" + message.getText() + "\n");
+			cliente.setCurrentMessage(message.getText());
 			message.setText("");
 		}
 		message.forceFocus();
